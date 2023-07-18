@@ -1,7 +1,14 @@
-const express = require('express');
-const app = express();
-const path = require('path');
+import express from 'express';
+import aiRouter from './routes/ai.js';
+import cors from 'cors';
 const PORT = 8080;
+const app = express();
+app.use(cors());
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use('/ai', aiRouter);
 
 // Catch-all error handler
 app.get('*', (req, res) => {
@@ -24,4 +31,4 @@ app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
 
-module.exports = app;
+export default app;
