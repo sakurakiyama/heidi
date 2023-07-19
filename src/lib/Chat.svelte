@@ -1,6 +1,8 @@
 <script>
   import { Icon, ArrowRightCircle } from 'svelte-hero-icons';
   import axios from 'axios';
+  import HeidiIcon from '../assets/Heidi-Icon.png';
+  import UserIcon from '../assets/User-Icon.png';
 
   let inputValue = '';
   let newMessage = '';
@@ -21,6 +23,7 @@
   ];
 
   const addMessage = (user) => {
+    if (newMessage === undefined) return;
     if (newMessage.trim() !== '') {
       messages = [
         ...messages,
@@ -51,17 +54,23 @@
       console.log(error);
     }
   };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') handleSubmit();
+  };
 </script>
 
 <main>
-  <div class="min-w-[20vw] md:min-w-[50vw] max-w-[75vw] mx-auto h-screen">
+  <div class="w-[80vw] md:w-[65vw] mx-auto h-screen">
     <div class="bg-white rounded-lg shadow-lg p-6 pb-5">
       <div>
         <div>
           {#each messages as message}
             {#if message.sender === 'Heidi'}
               <div class="text-center flex flex-row mb-10px p-2 justify-start">
-                <div>{message.sender}</div>
+                <div class="w-8 sm:w-10">
+                  <img src={HeidiIcon} alt="Heidi-Icon" />
+                </div>
                 <div class="ml-3 text-left max-w-[50%] mr-auto">
                   <div class="bg-stone-100 rounded-lg p-2">
                     {message.content}
@@ -75,20 +84,25 @@
             {#if message.sender === 'User'}
               <div class="text-center flex flex-row mb-10px p-2 justify-end">
                 <div class="mr-3 text-right max-w-[50%] ml-auto">
-                  <div class="bg-[var(--sender)] rounded-lg p-2 break-normal">
+                  <div
+                    class="bg-[var(--sender)] text-white rounded-lg p-2 break-words"
+                  >
                     {message.content}
                   </div>
                   <div class="text-xs">
                     {message.timeStamp}
                   </div>
                 </div>
-                <div>{message.sender}</div>
+                <div class="w-8 sm:w-10">
+                  <img src={UserIcon} alt="User-Icon" />
+                </div>
               </div>
             {/if}
           {/each}
-          <div class="flex">
+          <div class="flex items-center">
             <input
-              class="border-solid w-full px-2 rounded-lg border-2 border-radius border-stone-500"
+              on:keydown={handleKeyDown}
+              class="border-solid h-8 w-full px-2 rounded-full border-2 border-radius border-stone-500"
               id="message-input"
               type="text"
               placeholder="Type your message..."
@@ -98,7 +112,7 @@
               class="border-none outline-none bg-white focus:outline-none"
               on:click={handleSubmit}
               ><Icon
-                class="w-7 text-green-900"
+                class="w-7 text-stone-500"
                 src={ArrowRightCircle}
               /></button
             >
@@ -108,32 +122,3 @@
     </div>
   </div>
 </main>
-
-<style>
-  .chat-container {
-    margin: 0 auto;
-    padding: 20px;
-  }
-
-  /* .message {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 10px;
-  } */
-  /* 
-  .message-sender {
-    font-weight: bold;
-  }
-
-  .message-content {
-    background-color: #e5e5ea;
-    padding: 10px;
-    border-radius: 10px;
-  }
-
-  .message-timestamp {
-    font-size: 12px;
-    color: #888888;
-    margin-top: 5px;
-  } */
-</style>

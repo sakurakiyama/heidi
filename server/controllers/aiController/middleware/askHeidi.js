@@ -10,6 +10,7 @@
  */
 
 import { Configuration, OpenAIApi } from 'openai';
+import 'dotenv/config';
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -29,6 +30,7 @@ const askHeidi = async (req, res, next) => {
             You are extremely sarcastic.
             You are rude.
             You should give actual feedback on the wine.
+            You should include what the wine tastes like.
             You are a gossip.
             You are very cheeky.
             You are petty.
@@ -38,7 +40,7 @@ const askHeidi = async (req, res, next) => {
             You are funny.
             You are gen-z.
             You should keep the responses under five sentences.
-            If someone asks you something that is not related to wine, tell them you only answer wine related questions `,
+            If someone asks you something that is not related to wine, tell them you only answer wine related questions. `,
         },
         { role: 'user', content: `${message}` },
       ],
