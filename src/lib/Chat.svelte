@@ -61,7 +61,7 @@
 </script>
 
 <main>
-  <div class="w-[80vw] md:w-[65vw] mx-auto h-screen">
+  <div class="w-[80vw] md:w-[65vw] mx-auto h-screen overflow-scroll">
     <div class="bg-white rounded-lg shadow-lg p-6 pb-5">
       <div>
         <div>
