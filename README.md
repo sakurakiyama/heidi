@@ -24,6 +24,6 @@ Heidi is not your ordinary wine app; she's a vivacious and opinionated virtual s
 
 ## How to get started?
 1. Clone the repo
-2. Set up your OpenAI enviornment.
+2. Set up your OpenAI environment.
 3. Run ```npm run dev``` and ```npm run server```
    
