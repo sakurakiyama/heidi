@@ -84,7 +84,7 @@
 <main>
   <div
     bind:this={chatContainerRef}
-    class="w-[80vw] md:w-[65vw] mx-auto max-h-[70vh] overflow-scroll"
+    class="w-[80vw] md:w-[65vw] mx-auto max-h-[70vh] overflow-scroll overflow-hidden rounded-md"
   >
     <div class="bg-white rounded-lg shadow-lg p-6 pb-5">
       {#each messages as message}
