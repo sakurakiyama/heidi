@@ -1,13 +1,11 @@
 import axios from 'axios';
 
 import {
-  StyleSheet,
   TextInput,
   TouchableOpacity,
   Text,
   View,
   Image,
-  SafeAreaView,
   ScrollView,
 } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
@@ -15,6 +13,8 @@ import HeidiIcon from './assets/Heidi-Icon.png';
 import UserIcon from './assets/User-Icon.png';
 import Logo from './assets/Logo.png';
 import { useFonts } from 'expo-font';
+import { sharedStyles, heidiStyles, userStyles } from './styles';
+import { PaperAirplaneIcon } from 'react-native-heroicons/solid';
 
 export default function Chat() {
   const getTime = () => {
@@ -58,11 +58,13 @@ export default function Chat() {
   const handleSubmit = async (sample) => {
     try {
       if (inputValue) {
-        console.log('input val', inputValue);
         newMessage = inputValue;
         setInputValue('');
       } else newMessage = sample;
 
+      if (!newMessage) {
+        throw Error('Must enter a message');
+      }
       addMessage('User');
       const { data: review } = await axios.post(
         'http://localhost:8080/ai/askHeidi',
@@ -82,218 +84,113 @@ export default function Chat() {
   };
 
   return (
-    <View style={{ flex: 1, marginTop: '10%' }}>
-      <Image
-        style={{ width: 100, height: 100, marginLeft: 30 }}
-        source={Logo}
-      ></Image>
+    <View style={sharedStyles.mainContainer}>
+      <Image style={sharedStyles.logo} source={Logo} alt='Heidi-Logo'></Image>
 
-      <View style={styles.container}>
+      <View style={sharedStyles.chatContainer}>
         <ScrollView
-          contentContainerStyle={{ paddingBottom: 100 }}
           ref={chatContainerRef}
           onContentSizeChange={() =>
             chatContainerRef.current.scrollToEnd({ animated: true })
           }
         >
-          <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+          <View style={sharedStyles.time}>
             <Text>Today {getTime()}</Text>
           </View>
           {allMessages.map((message) => {
             return (
-              <View
-                style={
-                  message.sender === 'Heidi'
-                    ? styles.heidiMessage
-                    : styles.userMessage
-                }
-              >
+              <View style={sharedStyles.messageContainer}>
                 {message.sender === 'Heidi' ? (
-                  <View style={styles.heidiIconContainer}>
-                    <Image style={styles.icon} source={HeidiIcon} />
+                  <View style={sharedStyles.messageWrapper}>
+                    <View style={sharedStyles.imageWrapper}>
+                      <Image style={sharedStyles.icon} source={HeidiIcon} />
+                    </View>
+                    <View style={sharedStyles.messageContentWrapper}>
+                      <View style={heidiStyles.messageBubble}>
+                        <Text shared={sharedStyles.font}>
+                          {message.content}
+                        </Text>
+                      </View>
+                    </View>
                   </View>
-                ) : null}
-                <View
-                  style={
-                    message.sender === 'Heidi'
-                      ? styles.heidiMessageContent
-                      : styles.userMessageContent
-                  }
-                >
-                  <View
-                    style={
-                      message.sender === 'Heidi'
-                        ? styles.heidiMessageBubble
-                        : styles.userMessageBubble
-                    }
-                  >
-                    <Text styles={styles.font}>{message.content}</Text>
+                ) : (
+                  <View style={sharedStyles.messageWrapper}>
+                    <View style={sharedStyles.messageContentWrapper}>
+                      <View style={userStyles.messageBubble}>
+                        <Text style={userStyles.messageText}>
+                          {message.content}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={sharedStyles.imageWrapper}>
+                      <Image style={sharedStyles.icon} source={UserIcon} />
+                    </View>
                   </View>
-                </View>
-                {message.sender === 'User' ? (
-                  <View style={styles.userIconContainer}>
-                    <Image style={styles.icon} source={UserIcon} />
-                  </View>
-                ) : null}
+                )}
               </View>
             );
           })}
           {allMessages.length === 1 ? (
-            <View style={styles.sampleButtonContainer}>
+            <View style={sharedStyles.sampleButtonContainer}>
               <Text style={{ textAlign: 'center' }}>
                 Not sure what to ask Heidi? Try one of the wines below.
               </Text>
               <TouchableOpacity
-                style={styles.sampleButton}
+                style={sharedStyles.sampleButton}
                 onPress={() => handleSample('Gulp Orange Wine Halo 2022')}
               >
-                <Text style={styles.sampleButtonText}>
+                <Text style={sharedStyles.sampleButtonText}>
                   Gulp Orange Wine Halo 2022
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={styles.sampleButton}
+                style={sharedStyles.sampleButton}
                 onPress={() => {
                   handleSample('Caymus Napa Valley Cabernet Sauvignon 2021');
                 }}
               >
-                <Text style={styles.sampleButtonText}>
+                <Text style={sharedStyles.sampleButtonText}>
                   Caymus Napa Valley Cabernet Sauvignon 2021
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={styles.sampleButton}
+                style={sharedStyles.sampleButton}
                 onPress={() =>
                   handleSample(
                     "Château d'Esclans Whispering Angel Côtes de Provence Rose"
                   )
                 }
               >
-                <Text style={styles.sampleButtonText}>
+                <Text style={sharedStyles.sampleButtonText}>
                   Château d'Esclans Whispering Angel Côtes de Provence Rose
                 </Text>
               </TouchableOpacity>
             </View>
           ) : null}
         </ScrollView>
-        <View style={styles.inputContainer}>
-          <SafeAreaView>
+        <View style={sharedStyles.inputContainer}>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              width: '80%',
+            }}
+          >
             <TextInput
-              style={styles.input}
+              style={sharedStyles.input}
               onChangeText={(newText) => setInputValue(newText)}
               value={inputValue}
               placeholder='Ask Heidi...'
             ></TextInput>
-          </SafeAreaView>
-          <TouchableOpacity
-            style={styles.sampleButton}
-            onPress={() => handleSubmit()}
-          >
-            <Text>Send </Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={sharedStyles.sendButton}
+              onPress={() => handleSubmit()}
+            >
+              <PaperAirplaneIcon fill='black' />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  // Heidi Styles
-  heidiIconContainer: {
-    justifyContent: 'flex-start',
-  },
-  heidiMessageContent: {
-    flex: 1,
-    marginLeft: 3,
-    textAlign: 'left',
-    marginRight: 'auto',
-  },
-  heidiMessageBubble: {
-    flex: 0,
-    backgroundColor: '#F5F5F4',
-    borderRadius: 30,
-    padding: 10,
-  },
-  heidiMessage: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  // User Styles
-  userIconContainer: {
-    justifyContent: 'flex-end',
-  },
-  userMessageContent: {
-    flex: 1,
-    textAlign: 'right',
-    marginRight: 3,
-  },
-  userMessageBubble: {
-    flex: 0,
-    backgroundColor: '#218aff',
-    borderRadius: 30,
-    padding: 10,
-    textAlign: 'right',
-  },
-  userMessage: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  // General Styles
-  container: {
-    flex: 1,
-    marginLeft: '5%',
-    marginBottom: '5%',
-    marginRight: '5%',
-    overflow: 'scroll',
-    borderRadius: 30,
-    backgroundColor: 'white',
-    padding: 10,
-  },
-  icon: {
-    width: 40,
-    height: 100,
-    resizeMode: 'contain',
-  },
-  font: {
-    fontFamily: 'Helvetica Neue',
-  },
-  sampleButton: {
-    borderRadius: 50,
-    margin: 2,
-    borderStyle: 'solid',
-    borderColor: 'black',
-    backgroundColor: '#F5F5F4',
-    padding: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  sampleButtonText: {
-    color: 'black',
-    textAlign: 'center',
-    fontFamily: 'Helvetica Neue',
-  },
-  sampleButtonContainer: {
-    margin: '10%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  inputContainer: {
-    alignItems: 'center',
-    display: 'flex',
-    position: 'fixed',
-    bottom: 0,
-    width: '100%',
-    paddingBottom: 8,
-  },
-  input: {
-    borderStyle: 'solid',
-    borderRadius: 10,
-    borderColor: 'black',
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-  },
-});
