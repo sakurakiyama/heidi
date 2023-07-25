@@ -20,7 +20,6 @@ const openai = new OpenAIApi(configuration);
 const askHeidi = async (req, res, next) => {
   try {
     const { message } = req.body;
-
     const completion = await openai.createChatCompletion({
       model: 'gpt-3.5-turbo',
       messages: [
@@ -46,7 +45,6 @@ const askHeidi = async (req, res, next) => {
         { role: 'user', content: `${message}` },
       ],
     });
-
     res.locals.review = completion.data.choices[0].message;
 
     return next();
