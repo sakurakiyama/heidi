@@ -33,7 +33,6 @@ const sharedStyles = StyleSheet.create({
   messageContainer: {
     display: 'flex',
     flexDirection: 'row',
-    // backgroundColor: 'red',
     marginBottom: 3,
   },
   chatContainer: {
