@@ -8,9 +8,18 @@ Heidi is not your ordinary wine app; she's a vivacious and opinionated virtual s
 
 ## Tech Stack
 
+### Mobile
+- React Native
+- JavaScript
+- OpenAI
+
+### Web
 - Svelte
 - TypeScript
 - Tailwind CSS
+
+### Server
+- Node/Express
 - OpenAI
 
 ## What does Heidi do?
@@ -29,4 +38,4 @@ Heidi is not your ordinary wine app; she's a vivacious and opinionated virtual s
 
 1. Clone the repo
 2. Set up your OpenAI environment.
-3. Run `npm run dev` and `npm run server`
+3. Run `npm run dev` (web) or `npm expo start` (mobile) and `npm run server`
