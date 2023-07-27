@@ -89,7 +89,9 @@
     <div class="bg-white rounded-lg shadow-lg p-6 pb-5">
       {#each messages as message}
         {#if message.sender === 'Heidi'}
-          <div class="text-center flex flex-row mb-10px p-2 justify-start">
+          <div
+            class="messageBox text-center flex flex-row mb-10px p-2 justify-start"
+          >
             <div class="w-8 sm:w-10">
               <img src={HeidiIcon} alt="Heidi-Icon" />
             </div>
